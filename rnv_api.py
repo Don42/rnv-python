@@ -16,8 +16,9 @@ USER_AGENT = 'easy.GO Client Android v1.2.1 '\
     'Mobile Safari/537.36)'
 
 API_DOMAIN = 'http://rnv.the-agent-factory.de:8080'
-DEPARTURES_URL = '/easygo2/rest/regions/rnv/modules/stationmonitor/element'
-STATIONS_URL = '/easygo2/rest/regions/rnv/modules/stations/packages/1'
+SITE_URL = '/easygo2/rest/regions/rnv/modules/'
+DEPARTURES_URL = 'stationmonitor/element'
+STATIONS_URL = 'stations/packages/1'
 
 dump_json = functools.partial(json.dumps,
                               indent=4,
@@ -69,8 +70,9 @@ def get_departures(hafasID,
     headers = {'Accept': 'application/json',
                'Accept-Language': 'de',
                'User-Agent': USER_AGENT}
-    r = requests.get("{domain}{url}".format(domain=API_DOMAIN,
-                                            url=DEPARTURES_URL),
+    r = requests.get("{domain}{siteurl}{url}".format(domain=API_DOMAIN,
+                                                     siteurl=SITE_URL,
+                                                     url=DEPARTURES_URL),
                      params=payload,
                      headers=headers)
     if r.status_code != 200:
@@ -87,8 +89,9 @@ def get_stations():
     headers = {'Accept': 'application/json',
                'Accept-Language': 'de',
                'User-Agent': USER_AGENT}
-    r = requests.get("{domain}{url}".format(domain=API_DOMAIN,
-                                            url=STATIONS_URL),
+    r = requests.get("{domain}{siteurl}{url}".format(domain=API_DOMAIN,
+                                                     siteurl=SITE_URL,
+                                                     url=STATIONS_URL),
                      headers=headers)
     if r.status_code != 200:
         raise Exception(r)
