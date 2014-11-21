@@ -32,15 +32,15 @@ def find_station_by_short_name(name):
         get_stations()
     name = name.upper()
     station = next((item for item in stations if item['shortName'] == name))
-    return station['hafasID']
+    return station
 
 
 def find_station_by_long_name(name):
     if stations is None:
         get_stations()
     name = name.casefold()
-    matches = (item for item in stations if item['longName'].casefold == name)
-    return next(matches)['hafasID']
+    matches = (item for item in stations if item['longName'].casefold() == name)
+    return next(matches)
 
 
 def find_stations_by_long_name(name):
