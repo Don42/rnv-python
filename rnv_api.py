@@ -61,11 +61,11 @@ def get_hafasid_from_name(name):
 
 def get_departures(hafasID,
                    transport_filter=None,
-                   time='null',
+                   time=None,
                    ui_source='LINE'):
     payload = {'hafasID': hafasID,
                'transportFilter': transport_filter,
-               'time': time,
+               'time': time if time is not None else 'null',
                'usSource': ui_source}
     headers = {'Accept': 'application/json',
                'Accept-Language': 'de',

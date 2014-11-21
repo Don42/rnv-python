@@ -3,8 +3,13 @@
 rnv
 
 Usage:
-    rnv departures IDENTIFIER [-f FILTER | --filter=FILTER] [-n COUNT]
+    rnv departures IDENTIFIER [-f FILTER -n COUNT -t TIME]
     rnv stations
+
+
+-f FILTER, --filter=FILTER  Define transport filter
+-n COUNT, --count COUNT     Only display first COUNT connections
+-t TIME, --time TIME        Query connection at TIME
 
 """
 
@@ -23,6 +28,7 @@ dump_json = functools.partial(json.dumps,
 
 def get_departures_from_arg(args):
     transport_filter = args.get('FILTER', None)
+    time = args.get('TIME', None)  # TODO The client should not need this
     if args['IDENTIFIER'].isnumeric():
         json_data = rnv_api.get_departures(int(args['IDENTIFIER']),
                                            transport_filter=transport_filter)
