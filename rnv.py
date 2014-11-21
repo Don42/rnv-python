@@ -7,9 +7,9 @@ Usage:
     rnv stations
 
 
--f FILTER, --filter=FILTER  Define transport filter
--n COUNT, --count COUNT     Only display first COUNT connections
--t TIME, --time TIME        Query connection at TIME
+-f FILTER --filter=FILTER  Define transport filter
+-n COUNT --count=COUNT     Only display first COUNT connections
+-t TIME --time=TIME        Query connection at TIME
 
 """
 
@@ -27,8 +27,8 @@ dump_json = functools.partial(json.dumps,
 
 
 def get_departures_from_arg(args):
-    transport_filter = args.get('FILTER', None)
-    time = args.get('TIME', None)  # TODO The client should not need this
+    transport_filter = args.get('--filter', None)
+    time = args.get('--time', None)
     if args['IDENTIFIER'].isnumeric():
         hafas_id = int(args['IDENTIFIER'])
     else:
@@ -40,8 +40,8 @@ def get_departures_from_arg(args):
     print("Current Time: {0}".format(json_data['time']))
     if json_data.get('ticker', False):
         print("Ticker: {0}".format(json_data['ticker']))
-    if args.get('-n', False):
-        n = int(args.get('COUNT', 0))
+    if args.get('--count', False):
+        n = int(args.get('--count', 0))
         for dep in json_data['listOfDepartures'][:n]:
             print(dump_json(dep))
     else:
