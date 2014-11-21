@@ -30,18 +30,23 @@ def get_departures_from_arg(args):
     transport_filter = args.get('FILTER', None)
     time = args.get('TIME', None)  # TODO The client should not need this
     if args['IDENTIFIER'].isnumeric():
-        json_data = rnv_api.get_departures(int(args['IDENTIFIER']),
-                                           transport_filter=transport_filter)
-        print("Current Time: {0}".format(json_data['time']))
-        if json_data.get('ticker', False):
-            print("Ticker: {0}".format(json_data['ticker']))
-        if args.get('-n', False):
-            n = int(args.get('COUNT', 0))
-            for dep in json_data['listOfDepartures'][:n]:
-                print(dump_json(dep))
-        else:
-            for dep in json_data['listOfDepartures']:
-                print(dump_json(dep))
+        hafas_id = int(args['IDENTIFIER'])
+    else:
+        hafas_id = int(rnv_api.get_hafasid_from_name(args['IDENTIFIER']))
+
+    json_data = rnv_api.get_departures(hafas_id,
+                                       transport_filter=transport_filter,
+                                       time=time)
+    print("Current Time: {0}".format(json_data['time']))
+    if json_data.get('ticker', False):
+        print("Ticker: {0}".format(json_data['ticker']))
+    if args.get('-n', False):
+        n = int(args.get('COUNT', 0))
+        for dep in json_data['listOfDepartures'][:n]:
+            print(dump_json(dep))
+    else:
+        for dep in json_data['listOfDepartures']:
+            print(dump_json(dep))
 
 
 def main():
