@@ -84,6 +84,13 @@ def get_departures(hafasID,
 
 
 def get_stations():
+    data = json.loads(get_stations_raw())
+    global stations
+    stations = data['stations']
+    return stations
+
+
+def get_stations_raw():
     headers = {'Accept': 'application/json',
                'Accept-Language': 'de',
                'User-Agent': USER_AGENT}
@@ -92,7 +99,4 @@ def get_stations():
     if r.status_code != 200:
         raise Exception(r)
     else:
-        data = json.loads(r.text)
-        global stations
-        stations = data['stations']
-        return stations
+        return r.text
