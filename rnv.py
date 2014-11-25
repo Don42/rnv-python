@@ -55,10 +55,7 @@ def main():
         get_departures_from_arg(arguments)
     elif arguments.get('stations', False):
         json_data = rnv_api.get_stations()
-        print(json.dumps(json_data,
-                         indent=4,
-                         ensure_ascii=False,
-                         sort_keys=True))
+        print(dump_json(json_data))
 
 if __name__ == '__main__':
     main()
