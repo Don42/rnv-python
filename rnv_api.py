@@ -70,9 +70,7 @@ def get_departures(hafasID,
     headers = {'Accept': 'application/json',
                'Accept-Language': 'de',
                'User-Agent': USER_AGENT}
-    r = requests.get("{domain}{siteurl}{url}".format(domain=API_DOMAIN,
-                                                     siteurl=SITE_URL,
-                                                     url=DEPARTURES_URL),
+    r = requests.get("".join([API_DOMAIN, SITE_URL, DEPARTURES_URL]),
                      params=payload,
                      headers=headers)
     if r.status_code != 200:
@@ -89,9 +87,7 @@ def get_stations():
     headers = {'Accept': 'application/json',
                'Accept-Language': 'de',
                'User-Agent': USER_AGENT}
-    r = requests.get("{domain}{siteurl}{url}".format(domain=API_DOMAIN,
-                                                     siteurl=SITE_URL,
-                                                     url=STATIONS_URL),
+    r = requests.get("".join([API_DOMAIN, SITE_URL, STATIONS_URL]),
                      headers=headers)
     if r.status_code != 200:
         raise Exception(r)
