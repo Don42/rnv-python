@@ -76,6 +76,7 @@ def get_departures(hafasID,
     if r.status_code != 200:
         raise Exception(r)
     else:
+        r.encoding = 'utf-8'
         data = json.loads(r.text)
         if data.get('color', 0x464d59) != 0x464d59:
             return data
@@ -99,4 +100,5 @@ def get_stations_raw():
     if r.status_code != 200:
         raise Exception(r)
     else:
+        r.encoding = 'utf-8'
         return r.text
