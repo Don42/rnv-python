@@ -9,6 +9,7 @@
 import requests
 import json
 import functools
+import re
 
 USER_AGENT = 'easy.GO Client Android v1.2.1 '\
     '(Mozilla/5.0 (Linux; Android 4.4.4; Nexus 4 Build/KTU84Q) '\
@@ -19,6 +20,8 @@ API_DOMAIN = 'http://rnv.the-agent-factory.de:8080'
 SITE_URL = '/easygo2/rest/regions/rnv/modules/'
 DEPARTURES_URL = 'stationmonitor/element'
 STATIONS_URL = 'stations/packages/1'
+NEWS_URL = 'news'
+NEWS_COUNT_URL = 'news/numberOfNewEntries/0'
 
 dump_json = functools.partial(json.dumps,
                               indent=4,
@@ -102,3 +105,31 @@ def get_stations_raw():
     else:
         r.encoding = 'utf-8'
         return r.text
+
+
+def get_news():
+    headers = {'Accept': 'application/json',
+               'Accept-Language': 'de',
+               'User-Agent': USER_AGENT}
+    r = requests.get("".join([API_DOMAIN, SITE_URL, NEWS_URL]),
+                     headers=headers)
+    if r.status_code != 200:
+        raise Exception(r)
+    else:
+        r.encoding = 'utf-8'
+        return json.loads(r.text)
+
+
+def get_news_count():
+    headers = {'Accept': 'application/json',
+               'Accept-Language': 'de',
+               'User-Agent': USER_AGENT}
+    r = requests.get("".join([API_DOMAIN, SITE_URL, NEWS_COUNT_URL]),
+                     headers=headers)
+    if r.status_code != 200:
+        raise Exception(r)
+    else:
+        r.encoding = 'utf-8'
+        pattern = re.compile(r'\{number:"(\d+)"\}')
+        m = pattern.fullmatch(r.text)
+        return m.group(1)

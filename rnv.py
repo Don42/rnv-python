@@ -5,6 +5,7 @@ rnv
 Usage:
     rnv departures IDENTIFIER [-f FILTER -n COUNT -t TIME]
     rnv stations
+    rnv news [count | show]
 
 
 -f FILTER --filter=FILTER  Define transport filter
@@ -49,6 +50,15 @@ def get_departures_from_arg(args):
             print(dump_json(dep))
 
 
+def get_news_from_arg(args):
+    if(args.get('show', True)):
+        news = rnv_api.get_news()
+        print(dump_json(news))
+    elif(args.get('count', False)):
+        count = rnv_api.get_news_count()
+        print("{} news items available".format(count))
+
+
 def main():
     arguments = docopt.docopt(__doc__)
     if arguments.get('departures', False):
@@ -56,6 +66,8 @@ def main():
     elif arguments.get('stations', False):
         json_data = rnv_api.get_stations()
         print(dump_json(json_data))
+    elif arguments.get('news', False):
+        get_news_from_arg(arguments)
 
 if __name__ == '__main__':
     main()
