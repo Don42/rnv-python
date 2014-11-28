@@ -51,12 +51,15 @@ def get_departures_from_arg(args):
 
 
 def get_news_from_arg(args):
-    if(args.get('show', True)):
-        news = rnv_api.get_news()
-        print(dump_json(news))
-    elif(args.get('count', False)):
+    if(args.get('count', False)):
         count = rnv_api.get_news_count()
         print("{} news items available".format(count))
+    else:
+        news = rnv_api.get_news()
+        if news:
+            print(dump_json(news))
+        else:
+            print("No news available")
 
 
 def main():
