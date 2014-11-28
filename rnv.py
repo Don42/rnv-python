@@ -6,6 +6,7 @@ Usage:
     rnv departures IDENTIFIER [-f FILTER -n COUNT -t TIME]
     rnv stations
     rnv news [count | show]
+    rnv ticker [count | show]
 
 
 -f FILTER --filter=FILTER  Define transport filter
@@ -62,6 +63,18 @@ def get_news_from_arg(args):
             print("No news available")
 
 
+def get_ticker_from_arg(args):
+    if(args.get('count', False)):
+        count = rnv_api.get_ticker_count()
+        print("{} ticker items available".format(count))
+    else:
+        ticker = rnv_api.get_ticker()
+        if ticker:
+            print(dump_json(ticker))
+        else:
+            print("New ticker items available")
+
+
 def main():
     arguments = docopt.docopt(__doc__)
     if arguments.get('departures', False):
@@ -71,6 +84,8 @@ def main():
         print(dump_json(json_data))
     elif arguments.get('news', False):
         get_news_from_arg(arguments)
+    elif arguments.get('ticker', False):
+        get_ticker_from_arg(arguments)
 
 if __name__ == '__main__':
     main()

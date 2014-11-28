@@ -22,6 +22,8 @@ DEPARTURES_URL = 'stationmonitor/element'
 STATIONS_URL = 'stations/packages/1'
 NEWS_URL = 'news'
 NEWS_COUNT_URL = 'news/numberOfNewEntries/0'
+TICKER_URL = 'ticker'
+TICKER_COUNT_URL = 'ticker/numberOfNewEntries/0'
 
 dump_json = functools.partial(json.dumps,
                               indent=4,
@@ -125,6 +127,34 @@ def get_news_count():
                'Accept-Language': 'de',
                'User-Agent': USER_AGENT}
     r = requests.get("".join([API_DOMAIN, SITE_URL, NEWS_COUNT_URL]),
+                     headers=headers)
+    if r.status_code != 200:
+        raise Exception(r)
+    else:
+        r.encoding = 'utf-8'
+        pattern = re.compile(r'\{number:"(\d+)"\}')
+        m = pattern.fullmatch(r.text)
+        return m.group(1)
+
+
+def get_ticker():
+    headers = {'Accept': 'application/json',
+               'Accept-Language': 'de',
+               'User-Agent': USER_AGENT}
+    r = requests.get("".join([API_DOMAIN, SITE_URL, TICKER_URL]),
+                     headers=headers)
+    if r.status_code != 200:
+        raise Exception(r)
+    else:
+        r.encoding = 'utf-8'
+        return json.loads(r.text)
+
+
+def get_ticker_count():
+    headers = {'Accept': 'application/json',
+               'Accept-Language': 'de',
+               'User-Agent': USER_AGENT}
+    r = requests.get("".join([API_DOMAIN, SITE_URL, TICKER_COUNT_URL]),
                      headers=headers)
     if r.status_code != 200:
         raise Exception(r)
