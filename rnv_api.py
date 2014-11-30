@@ -8,7 +8,6 @@
 
 import requests
 import json
-import functools
 import re
 
 USER_AGENT = 'easy.GO Client Android v1.2.1 '\
@@ -25,10 +24,6 @@ NEWS_COUNT_URL = 'news/numberOfNewEntries/0'
 TICKER_URL = 'ticker'
 TICKER_COUNT_URL = 'ticker/numberOfNewEntries/0'
 
-dump_json = functools.partial(json.dumps,
-                              indent=4,
-                              ensure_ascii=False,
-                              sort_keys=True)
 stations = None
 
 
