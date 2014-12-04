@@ -29,6 +29,12 @@ dump_json = functools.partial(json.dumps,
 
 
 def get_departures_from_arg(args):
+    """Gets departures from arguments and prints them
+
+    Gets arguments from dictionary, if necessary retrieves the HafasID from
+    station name and calls the api to get the departure data.
+
+    """
     transport_filter = args.get('--filter', None)
     time = args.get('--time', None)
     if args['IDENTIFIER'].isnumeric():
@@ -52,6 +58,12 @@ def get_departures_from_arg(args):
 
 
 def get_news_from_arg(args):
+    """Get news from arguments
+
+    Differntiates between 'count' and 'show', calls the API
+    and prints the result.
+
+    """
     if(args.get('count', False)):
         count = rnv_api.get_news_count()
         print("{} news items available".format(count))
@@ -64,6 +76,12 @@ def get_news_from_arg(args):
 
 
 def get_ticker_from_arg(args):
+    """Get ticker from arguments
+
+    Differntiates between 'count' and 'show', calls the API
+    and prints the result.
+
+    """
     if(args.get('count', False)):
         count = rnv_api.get_ticker_count()
         print("{} ticker items available".format(count))
@@ -76,6 +94,9 @@ def get_ticker_from_arg(args):
 
 
 def main():
+    """Differentiates between commands
+
+    """
     arguments = docopt.docopt(__doc__)
     if arguments.get('departures', False):
         get_departures_from_arg(arguments)
