@@ -90,7 +90,7 @@ def get_ticker_from_arg(args):
         if ticker:
             print(dump_json(ticker))
         else:
-            print("New ticker items available")
+            print("No new ticker items available")
 
 
 def main():
