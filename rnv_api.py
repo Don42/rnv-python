@@ -36,6 +36,7 @@ API_DOMAIN = 'http://rnv.the-agent-factory.de:8080'
 SITE_URL = '/easygo2/rest/regions/rnv/modules/'
 DEPARTURES_URL = 'stationmonitor/element'
 STATIONS_URL = 'stations/packages/1'
+LINE_URL = 'lines'
 NEWS_URL = 'news'
 NEWS_COUNT_URL = 'news/numberOfNewEntries/0'
 TICKER_URL = 'ticker'
@@ -51,7 +52,7 @@ def find_station_by_short_name(name):
     Only the first of several matches is returned.
     Args:
         name (string): short name of the station.
-        The string has to be a valid short name.
+            The string has to be a valid short name.
 
     Returns:
         dict: Station object  if found
@@ -201,6 +202,35 @@ def get_stations_raw():
     else:
         r.encoding = 'utf-8'
         return r.text
+
+
+def get_line(hafas_id,
+             line_id,
+             tour_id,
+             tour_type,
+             stop_index=0,
+             time=None):
+    """Retrieves stations of one line
+
+    """
+    headers = {'Accept': 'application/json',
+               'Accept-Language': 'de',
+               'User-Agent': USER_AGENT}
+    payload = {'hafasID': hafas_id,
+               'lineID': line_id,
+               'tourID': tour_id,
+               'tourType': tour_type,
+               'stopIndex': stop_index,
+               'time': time if time is not None else '15:00'}
+    r = requests.get("".join([API_DOMAIN, SITE_URL, LINE_URL]),
+                     headers=headers,
+                     params=payload)
+    if r.status_code != 200:
+        raise requests.HTTPError(r)
+    else:
+        r.encoding = 'utf-8'
+        data = json.loads(r.text)
+        return data
 
 
 def get_news():
