@@ -5,6 +5,7 @@ rnv
 Usage:
     rnv departures IDENTIFIER [-f FILTER -n COUNT -t TIME]
     rnv stations
+    rnv line
     rnv news [count | show]
     rnv ticker [count | show]
 
@@ -93,6 +94,11 @@ def get_ticker_from_arg(args):
             print("No new ticker items available")
 
 
+def get_line_from_arg(args):
+    hafas_id = int(rnv_api.get_hafasid_from_name('sandhofen'))
+    print(dump_json(rnv_api.get_line(hafas_id, '45', '288920652', '454REFAUS')))
+
+
 def main():
     """Differentiates between commands
 
@@ -107,6 +113,8 @@ def main():
         get_news_from_arg(arguments)
     elif arguments.get('ticker', False):
         get_ticker_from_arg(arguments)
+    elif arguments.get('line', False):
+        get_line_from_arg(arguments)
 
 if __name__ == '__main__':
     main()
